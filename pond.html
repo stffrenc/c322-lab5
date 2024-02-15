@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name = "viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Document</title>
+        <style>
+            .card {
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+                transition: 0.3s;
+                width: 20%;
+                border-radius: 5px;
+            }
+
+            .card:hover{
+                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            }
+
+            img { 
+                border-radius: 5px 5px 0 0 ;
+            }
+
+            .container{
+                padding: 2px 16px;
+            }
+        </style>
+    </head>
+    <body>
+        <script>
+            async function fetchDucks() {
+                const response = await fetch('http://localhost:8080/ducks');
+                if (response.ok) {
+                    const ducks = await response.json();
+                    ducks.forEach(duck => {
+                        createDuckCard(duck);
+                    });
+                } else {
+                    console.error('Failed to fetch ducks');
+                }
+            }
+        
+            function createDuckCard(duck) {
+                const card = document.createElement('div');
+                card.className = 'card';
+        
+                const img = document.createElement('img');
+                img.src = `http://localhost:8080/ducks/${duck.id}/image`;
+                img.alt = 'Duck';
+        
+                const container = document.createElement('div');
+                container.className = 'container';
+        
+                const id = document.createElement('h4');
+                id.innerHTML = `<b>${duck.id}</b>`;
+        
+                const type = document.createElement('p');
+                type.textContent = duck.type;
+        
+                container.appendChild(id);
+                container.appendChild(type);
+        
+                card.appendChild(img);
+                card.appendChild(container);
+        
+                document.body.appendChild(card);
+            }
+        
+            fetchDucks();
+        </script>
+    </body>
+</html>
